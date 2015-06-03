@@ -1,0 +1,7 @@
+<ul data-ng-repeat="article in articles | orderBy: orderProp">
+    <li>
+        <h4>{{article.title}}</h4>
+        <p>{{article.body}}</p>
+        <i>Author: {{article.author}}</i>
+    </li>
+</ul>
