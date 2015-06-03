@@ -22,7 +22,7 @@
         $scope.init = function() {
             $scope.listArticles();
         };
-
+        
         $scope.init();
         
     }]);

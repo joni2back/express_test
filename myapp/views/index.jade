@@ -3,7 +3,11 @@ extends layout
 block content
   div.container
     h1 Site
-    p Login TODO
 
-    h3 data
-    div(ng-include="'/angular/views/articles-list.html'")
+    ul.list-inline
+     li
+        a(href='/#login') Login
+      li
+        a(href='/#articles') Articles
+
+    ng-view
