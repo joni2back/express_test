@@ -7,11 +7,11 @@
         $scope.articles = [];
         $scope.requesting = false;
 
-        $scope.listArticles = function(name) {
+        $scope.listArticles = function() {
             var data = {};
             $scope.articles = [];
             $scope.requesting = true;
-            return $http.get('/articles.json', data).success(function(data) {
+            return $http.get('/api/articles.json', data).success(function(data) {
                 angular.forEach(data, function(value, key) {
                     $scope.articles.push(new Article(value));
                 });
@@ -21,12 +21,8 @@
             });
         };
 
-        $scope.init = function() {
-            $scope.listArticles();
-        };
-        
         $scope.$on('$routeChangeSuccess', function(next, current) {
-            $scope.init();
+            $scope.listArticles();
         });
         
     }]);

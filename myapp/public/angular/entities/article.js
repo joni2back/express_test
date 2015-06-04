@@ -1,6 +1,6 @@
 (function(angular) {
     "use strict";
-    angular.module('TestApp').factory('article', ['$http', function($http) {
+    angular.module('TestApp').factory('article', function() {
 
         var Article = function(model) {
             this.id = null;
@@ -11,10 +11,6 @@
             angular.extend(this, model);
         };
 
-        Article.prototype.save = function() {
-            
-        };
-
         return Article;
-    }]);
+    });
 })(angular);

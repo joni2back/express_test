@@ -1,57 +1,42 @@
 var express = require('express');
-var router = express.Router();
-var ARTICLES = [
-  {
-    id: 1,
-    title: 'Desierto Verde',
-    author: 'Arturo Jaureche',
-    body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-  },
-  {
-    id: 2,
-    title: 'El crimen de la guerra (1870)',
-    author: 'Juan Bautista Alberdi',
-    body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-  },
-  {
-    id: 3,
-    title: 'Facundo o Civilización y Barbarie',
-    author: 'Domingo Faustino Sarmiento',
-    body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-  }
-];
+var crypto = require('crypto');
+var photos = require('../data/photos');
+var articles = require('../data/articles');
 
-var PHOTOS = [
-  { id: 1, src: "http://imagenface.com/imagens/imagenes-de-paisajes-1.jpg" },
-  { id: 2, src: "http://imagenface.com/imagens/imagenes-de-paisajes-8.jpg" },
-  { id: 3, src: "http://imagenface.com/imagens/imagenes-de-paisajes-18.jpg" }
-];
+var router = express.Router();
+var currentToken;
+
+function validTokenProvided(req, res, next) {
+    var bearerHeader = req.headers["authorization"];
+    if (typeof bearerHeader !== 'undefined') {
+        var bearer = bearerHeader.split(" ");
+        if (currentToken === bearer[1]) {
+            return true;
+        }
+    }
+    res.send(401, { error: 'Invalid auth token' });
+}
+
+function buildToken() {
+    return crypto.randomBytes(32).toString('hex');
+}
+
+// middleware to prevent unauthorized users in the api
+router.use('/api', function (req, res, next) {
+  validTokenProvided(req, res) && next();
+});
 
 router.get('/', function(req, res, next) {
   res.render('index', { });
 });
 
-router.get('/articles.json', function(req, res) {
-    res.send(ARTICLES);
+router.get('/api/articles.json', function(req, res) {
+    res.send(articles);
 });
 
-router.get('/photos.json', function(req, res) {
-    res.send(PHOTOS);
+router.get('/api/photos.json', function(req, res) {
+    res.send(photos);
 });
-
-var currentToken;
-function validTokenProvided(req, res) {
-
-  // Check POST, GET, and headers for supplied token.
-  var userToken = req.body.token || req.param('token') || req.headers.token;
-
-  if (!currentToken || userToken != currentToken) {
-    res.send(401, { error: 'Invalid token. You provided: ' + userToken });
-    return false;
-  }
-
-  return true;
-};
 
 router.post('/auth.json', function(req, res) {
 
@@ -59,15 +44,16 @@ router.post('/auth.json', function(req, res) {
       username = body.username,
       password = body.password;
 
-  if (username == 'dev' && password == 'moravia') {
+  if (username === 'dev' && password === 'moravia') {
     // Generate and save the token (forgotten upon server restart).
-    currentToken = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    currentToken = buildToken();
     res.send({
       success: true,
-      token: currentToken
+      token: currentToken,
+      username: username
     });
   } else {
-    res.send({
+    res.send(500, {
       success: false,
       message: 'Invalid username/password'
     });

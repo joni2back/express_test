@@ -1,6 +1,6 @@
 <section>
-	<h3>Login to the app</h3>
-	
+	<h3 class="hide">Login to the app</h3>
+
 	<form ng-submit="submitLoginForm()">
 	  <div class="form-group">
 	    <label for="formuser">Username</label>
@@ -12,5 +12,7 @@
 	  </div>
 
 	  <button type="submit" class="btn btn-default">Login</button>
+      <span class="label label-danger" ng-show="message">{{message}}</span>
 	</form>
+
 </section>

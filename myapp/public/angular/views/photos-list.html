@@ -1,0 +1,22 @@
+<section>
+	<h3>Photo list</h3>
+
+	<div class="text-center" ng-show="requesting">Loading</div>
+
+	<div ng-hide="requesting">
+
+
+        <div class="row">
+          <div class="col-sm-6 col-md-4" data-ng-repeat="photo in photos | orderBy: orderProp">
+            <div class="thumbnail">
+              <img ng-src="{{photo.src}}" alt="{{photo.alt}}"/>
+              <div class="caption text-center">
+                <h3>{{photo.alt}}</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+	</div>
+</section>
+

@@ -10,15 +10,23 @@ block content
               span.icon-bar
               span.icon-bar
               span.icon-bar
-            a.navbar-brand(href='#') App
+            a.navbar-brand(href='/#/') App
           #navbar.navbar-collapse.collapse
             ul.nav.navbar-nav
-              li.active
-                a(href='/#') Home
-              li
+              li(ng-class='{active: !$route.current.activeTab || $route.current.activeTab == "main"}')
+                a(href='/#/') Home
+              li(ng-class='{active: $route.current.activeTab == "articles"}')
                 a(href='/#articles') Articles
+              li(ng-class='{active: $route.current.activeTab == "photos"}')
+                a(href='/#photos') Photos
 
             ul.nav.navbar-nav.navbar-right
-              li
-                a(href='/#login') Login      
+              li(ng-show='!authService.authentication.isAuth', ng-class='{active: $route.current.activeTab == "login"}')
+                a(href='/#login') Login
+              li(ng-show='authService.authentication.isAuth')
+                a
+                  b(ng-bind="'Welcome ' + authService.authentication.username")
+              li(ng-show='authService.authentication.isAuth')
+                a(href='#', ng-click='logout()') Logout
       ng-view
+

@@ -1,13 +1,14 @@
 (function(angular) {
     "use strict";
-    angular.module('TestApp').controller('MainCtrl', ['$scope', '$http', function($scope, $http) {
+    angular.module('TestApp').controller('MainCtrl', ['$scope', '$route', '$location', 'authService', function($scope, $route, $location, authService) {
 
-        $scope.init = function() {
+        $scope.$route = $route;
+        $scope.authService = authService;
+
+        $scope.logout = function () {
+            authService.logOut();
+            $location.path('/home');
         };
-
-
-         
-        $scope.init();
 
     }]);
 })(angular);
