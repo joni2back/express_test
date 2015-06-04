@@ -5,9 +5,7 @@
         $scope.init = function() {
         };
 
-        $scope.$on('$routeChangeStart', function(next, current) {
-           console.info(next);
-         });
+
          
         $scope.init();
 

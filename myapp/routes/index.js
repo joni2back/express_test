@@ -40,7 +40,6 @@ router.get('/photos.json', function(req, res) {
 });
 
 var currentToken;
-
 function validTokenProvided(req, res) {
 
   // Check POST, GET, and headers for supplied token.

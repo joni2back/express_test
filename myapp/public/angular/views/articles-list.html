@@ -1,7 +1,15 @@
-<ul data-ng-repeat="article in articles | orderBy: orderProp">
-    <li>
-        <h4>{{article.title}}</h4>
-        <p>{{article.body}}</p>
-        <i>Author: {{article.author}}</i>
-    </li>
-</ul>
+<section>
+	<h3>Articles list</h3>
+
+	<div class="text-center" ng-show="requesting">Loading</div>
+
+	<div ng-hide="requesting">
+		<ul data-ng-repeat="article in articles | orderBy: orderProp">
+		    <li>
+		        <h4>{{article.title}}</h4>
+		        <p>{{article.body}}</p>
+		        <i>Author: {{article.author}}</i>
+		    </li>
+		</ul>
+	</div>
+</section>

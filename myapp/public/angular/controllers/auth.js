@@ -7,8 +7,8 @@
             password: ''
         };
 
-        $scope.tryLogin = function(name) {
-            return $http.get('/articles.json', $scope.form).success(function(data) {
+        $scope.submitLoginForm = function(name) {
+            return $http.post('/auth.json', $scope.form).success(function(data) {
                 console.info(data);
             }).error(function(data) {
             })['finally'](function() {
