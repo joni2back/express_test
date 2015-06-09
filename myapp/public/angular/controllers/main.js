@@ -7,7 +7,7 @@
 
         $scope.logout = function () {
             authService.logOut();
-            $location.path('/home');
+            $location.path('/');
         };
 
     }]);

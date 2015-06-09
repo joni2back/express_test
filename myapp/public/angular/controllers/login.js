@@ -10,7 +10,7 @@
         
         $scope.submitLoginForm = function() {
             authService.login($scope.form).then(function (response) {
-                $location.path('/orders');
+                $location.path('/');
             }, function (response) {
                 $scope.message = response.message;
             });
